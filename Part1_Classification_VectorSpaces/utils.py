@@ -180,3 +180,32 @@ def confidence_ellipse(x, y, ax, n_std=3.0, facecolor='none', **kwargs):
 
     ellipse.set_transform(transf + ax.transData)
     return ax.add_patch(ellipse)
+
+
+def lookup(freqs, word, label):
+    '''
+    Input:
+        freqs: a dictionary with the frequency of each pair (or tuple)
+        word: the word to look up
+        label: the label corresponding to the word
+    Output:
+        n: the number of times the word with its corresponding label appears.
+    '''
+    n = 0  # freqs.get((word, label), 0)
+
+    pair = (word, label)
+    if pair in freqs:
+        n = freqs[pair]
+
+    return n
+
+
+def test_lookup(func):
+    freqs = {('sad', 0): 4,
+             ('happy', 1): 12,
+             ('oppressed', 0): 7}
+    word = 'happy'
+    label = 1
+    if func(freqs, word, label) == 12:
+        return 'SUCCESS!!'
+    return 'Failed Sanity Check!'
