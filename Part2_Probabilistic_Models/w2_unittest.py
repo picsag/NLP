@@ -937,7 +937,6 @@ def test_viterbi_forward(target, A, B, test_corpus, vocab):
                     open("./support_files/best_paths_initilized.pkl", "rb")
                 ),
                 "vocab": vocab,
-                "verbose": False,
             },
             "expected": {
                 "best_probs0:5": np.array(
