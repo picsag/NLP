@@ -983,7 +983,7 @@ w2_unittest.test_initialize(initialize, states, tag_counts, A, B, prep, vocab)
 
 
 # UNQ_C6 GRADED FUNCTION: viterbi_forward
-def viterbi_forward(A, B, test_corpus, best_probs, best_paths, vocab):
+def viterbi_forward(A, B, test_corpus, best_probs, best_paths, vocab, verbose=True):
     '''
     Input: 
         A, B: The transiton and emission matrices respectively
@@ -1144,7 +1144,7 @@ w2_unittest.test_viterbi_forward(viterbi_forward, A, B, prep, vocab)
 
 
 # UNQ_C7 GRADED FUNCTION: viterbi_backward
-def viterbi_backward(best_probs, best_paths, corpus, states):
+def viterbi_backward(best_probs, best_paths, corpus, states, verbose=True):
     '''
     This function returns the best path.
     
