@@ -20,7 +20,6 @@ debug_pipeline.method = 'pow'
 # ==============================================================================
 EvalTask.export_prefix = None
 EvalTask.metric_names = None
-EvalTask.n_eval_batches = 1
 EvalTask.sample_batch = None
 
 # Parameters for LogSoftmax:
@@ -32,6 +31,7 @@ LogSoftmax.axis = -1
 TrainTask.export_prefix = None
 TrainTask.loss_name = None
 TrainTask.lr_schedule = None
+TrainTask.n_steps_per_checkpoint = 100
 TrainTask.n_steps_per_permanent_checkpoint = None
 TrainTask.sample_batch = None
 
