@@ -7,3 +7,4 @@ emoji
 jupyter
 trax
 sacrebleu
+sentencepiece
