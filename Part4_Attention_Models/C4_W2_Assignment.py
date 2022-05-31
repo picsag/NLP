@@ -95,7 +95,6 @@ np.set_printoptions(threshold=sys.maxsize)
 
 
 # This will download the dataset if no data_dir is specified.
-# Downloading and processing can take bit of time,
 # so we have the data already in 'data/' for you
 
 # Importing CNN/DailyMail articles dataset
@@ -141,6 +140,7 @@ def tokenize(input_str, EOS=1):
     # Mark the end of the sentence with EOS
     return list(inputs) + [EOS]
 
+
 def detokenize(integers):
     """List of ints to str"""
   
@@ -165,8 +165,8 @@ def detokenize(integers):
 
 
 # Special tokens
-SEP = 0 # Padding or separator token
-EOS = 1 # End of sentence token
+SEP = 0  # Padding or separator token
+EOS = 1  # End of sentence token
 
 # Concatenate tokenized inputs and targets using 0 as separator.
 def preprocess(stream):
