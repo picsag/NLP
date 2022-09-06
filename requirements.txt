@@ -5,6 +5,7 @@ pandas
 scikit-learn
 emoji
 jupyter
+spacy
 trax
 sacrebleu
 sentencepiece
