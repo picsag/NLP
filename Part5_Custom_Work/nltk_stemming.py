@@ -2,6 +2,7 @@
 # as Spacy does not support stemming, only lemmatization, NLTK has to be used for stemming
 import spacy
 from nltk.stem import PorterStemmer
+from spacy.lang.en.stop_words import STOP_WORDS
 
 stemmer = PorterStemmer()
 
@@ -30,3 +31,22 @@ for token in doc2:
 doc3 = nlp("Elon flew to Mars yesterday. He carried mashed potato with him")
 for token in doc3:
     print(token, " | ", token.pos_, " | ", token.tag_, " | ", spacy.explain(token.tag_))
+
+# print by excluding spaces and punctuation
+for token in doc3:
+    if token.pos_ in ["SPACE", "X", "PUNCT"]:
+        print(token, " | ", token.pos_, " | ", token.tag_, " | ", spacy.explain(token.tag_))
+
+count = doc.count_by(spacy.attrs.POS)
+
+for k, v in count.items():
+    print(doc.vocab[k].text, " | ", v)
+
+# print by excluding spaces and punctuation
+for ent in doc3.ents:
+    print(ent, " | ", ent.text, " | ", spacy.explain(ent.label_))
+
+print(f"Number of stop words in spacy: {STOP_WORDS}")
+
+
+
