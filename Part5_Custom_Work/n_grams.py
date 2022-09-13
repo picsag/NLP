@@ -1,6 +1,12 @@
 import spacy
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.model_selection import train_test_split
+from sklearn.naive_bayes import MultinomialNB
+from sklearn.pipeline import Pipeline
+from sklearn.metrics import classification_report
+from sklearn.metrics import confusion_matrix
+from matplotlib import pyplot as plt
+import seaborn as sn
 import pandas as pd
 import time
 
@@ -43,6 +49,7 @@ feat = v.transform(["Batman drinks coffee"])
 
 print(f"Feature for 'Batman drinks coffee' = {feat.toarray()}")
 
+# importing news category classification dataset from Kaggle
 start = time.process_time()
 df = pd.read_json("News_Category_Dataset_v2.json", lines=True)
 end = time.process_time()
@@ -51,6 +58,8 @@ print(f"Time to read news dataset: {end - start}")
 print(df.shape)
 
 print(df.head(5))
+
+print(df.columns)
 
 # an imbalanced dataset:
 print(df["category"].value_counts())
@@ -76,5 +85,74 @@ target = {'FIFTY':0, 'GOOD NEWS': 1, 'ARTS & CULTURE': 2, 'ENVIRONMENT': 3, 'COL
 
 df_balanced['category_num'] = df_balanced['category'].map(target)
 
-X_train, X_test, y_train, y_test = train_test_split(df_balanced["text"], df_balanced["category_run"])
+X_train, X_test, y_train, y_test = train_test_split(df_balanced["short_description"], df_balanced["category_num"],
+                                                    test_size=0.2, random_state=2022,
+                                                    stratify=df_balanced['category_num'])  #eq no of samples for classes
 
+print(f"Size of train data: {X_train.shape[0]}")
+print(X_train.head())
+
+print(y_train.value_counts())
+
+# using 1-gram Approach
+clf = Pipeline([
+    ('vectorizer_bow', CountVectorizer()),
+    ('Multi NB', MultinomialNB())
+])
+
+clf.fit(X_train, y_train)
+
+y_pred = clf.predict(X_test)
+
+print(classification_report(y_test, y_pred))
+
+# using 2-gram BOW approach
+clf2 = Pipeline([
+    ('vectorizer_bow', CountVectorizer(ngram_range = (1, 2))),
+    ('Multi NB', MultinomialNB())
+])
+
+clf2.fit(X_train, y_train)
+
+y_pred = clf2.predict(X_test)
+
+print(classification_report(y_test, y_pred))
+
+# using 2-gram BOW approach
+clf3 = Pipeline([
+    ('vectorizer_bow', CountVectorizer(ngram_range=(1, 3))),
+    ('Multi NB', MultinomialNB())
+])
+
+clf3.fit(X_train, y_train)
+
+y_pred = clf3.predict(X_test)
+
+print(classification_report(y_test, y_pred))
+
+start = time.process_time()
+df_balanced['preprocessed_text'] = df_balanced['short_description'].apply(preprocess)
+end = time.process_time()
+print(f"Time to preprocess dataset: {end - start}")
+
+X_train, X_test, y_train, y_test = train_test_split(df_balanced["preprocessed_text"], df_balanced["category_num"],
+                                                    test_size=0.2, random_state=2022,
+                                                    stratify=df_balanced['category_num'])  #eq no of samples for classes
+
+clf4 = Pipeline([
+    ('vectorizer_bow', CountVectorizer(ngram_range=(1, 3))),
+    ('Multi NB', MultinomialNB())
+])
+
+clf4.fit(X_train, y_train)
+
+y_pred = clf4.predict(X_test)
+
+print(classification_report(y_test, y_pred))
+
+cm = confusion_matrix(y_test, y_pred)
+plt.figure(figsize=(10, 7))
+sn.heatmap(cm, annot=True, fmt='d')
+plt.xlabel('Prediction')
+plt.ylabel('Truth')
+plt.show()
